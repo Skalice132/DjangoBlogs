@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded container d-flex align-items-start">
+
+            <!-- Вход\Выход
+            <div class="btn-group" role="group" aria-label="Basic example">
+            {% if user.is_authenticated %}
+            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-sm mr-2">Профиль</a>
+            </div>
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm mr-2">Выйти</a>
+            </div>
+            {% else %}
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <a href="{% url 'reg' %}" class="btn btn-outline-secondary mb-1 btn-sm">Регистрация</a>
+            </div>
+            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary mb-1 btn-sm">Войти</a>
+            </div>
+            {% endif %}
+            </div> -->
+        <div class="col-sm-8">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Меню -->
+        <div class="collapse navbar-collapse text-center" id="navbarsExample09">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'blog-home' %}">Главная</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="">Контакты</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="">Обратная связь</a>
+          </ul>
+        </div>
+        </div>
+
+
+  </nav>
+
+
+  <main class="container">
+    <div class="row">
+        <h2 class="col-md-8 text-center p-3"> {{ titlepage }} </h2>
+
+        <div class="col-md-8">
+            {% if messages %}
+                {% for mess in messages %}
+                    <div class="alert alert-success">
+                        {{ mess }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block main_section %}
+            {% endblock main_section %}
+        </div>
+
+        <aside class="col-md-4">
+                    <!-- Карточка\Добро пожаловать -->
+        <div class="">
+        {% if user.is_authenticated %}
+            <div class="btn btn-outline border mb-2 bg-light">
+              <div class="media text-muted pt-3">
+                  <img src="{{ user.profile.img.url }}" class="mr-2 rounded rounded-circle" width="64" height="64">
+                  <div class="media-body pb-3 mb-0 small lh-125 border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                      <strong class="text-gray-dark">Full Name</strong>
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm mr-2">Выйти</a>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                      <p class="text-gray-dark">@{{ user.username }}</p>
+                    </div>
+                      <p><b>Email:</b> {{ user.email }}</p>
+                    <div class="btn-group m-2" role="group" aria-label="Second group">
+                        <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-sm">Профиль</a>
+                    </div>
+                    <a href="{% url 'news-add' %}" class="btn btn-outline btn-sm border bg-light">Написать статью</a>
+                  </div>
+              </div>
+              <div class="text-center mt-2"> {{ date }} </div>
+            </div>
+        {% else %}
+            <div>
+            <span>Добро пожаловать!<a class="ml-1"  href="{% url 'reg' %} ">Пойдем к нам?</a></span>
+            <p class="text-center"> {{ date }} </p>
+            </div>
+        {% endif %}
+        </div>
+
+            <div class="bg-secondary text-light p-3 md-3 rounded">
+                <h3><b>Интересные цитаты</b></h3>
+                <p>1. {{ a }} </p>
+                <p>2. {{ b }}  </p>
+                <div class="p-3 mb-3"></div>
+            </div>
+        </aside>
+    </div>
+  </main>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+<footer class="blog-footer fixed-bottom text-center">
+  <hr>
+  <p> Я знаю, что выглядит паршиво, но это все <a href="https://getbootstrap.com/">Bootstrap</a>. Если хочешь мне об этом сказать, то пиши <a href="https://vk.com/id32404414">@Maxim</a>.</p>
+  <p>
+    <a href="#">Верх сделан интереснее</a>
+  </p>
+  <center>
+    <iframe src="https://money.yandex.ru/quickpay/button-widget?targets=%D0%94%D0%B0%D1%80%D0%B8%D1%82%D0%B5%20%D0%BB%D1%8E%D0%B1%D0%BE%D0%B2%D1%8C%20%3C3&default-sum=100&button-text=13&yamoney-payment-type=on&button-size=s&button-color=black&fio=on&mail=on&successURL=&quickpay=small&account=4100110093361063&" width="127" height="25" frameborder="0" allowtransparency="true" scrolling="no"></iframe></p>
+  </center>
+</footer>
+</html>

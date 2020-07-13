@@ -1,0 +1,41 @@
+{% extends 'blog/main.html' %}
+{% block main_section %}
+    <h2 class="text-center p-3"> Статьи автора:  {{ view.kwargs.username }} </h2>
+    <h4 class="text-center p-3"> Количество статей:  {{ page_obj.paginator.count }} </h4>
+    {% for post in post %}
+    <div class="bg-secondary text-light p-3 md-3 rounded">
+        <h4 class="mx-2"> {{ post.title }} </h4>
+        <p> {{ post.text|striptags|truncatechars:201 }} </p>
+        <div class="row  p-2">
+            <div class="">
+                <img src="{{ post.author.profile.img.url }}" alt="{{ post.author }}" class="mr-2 rounded rounded-circle" width="64" height="64">
+            </div>
+            <div class="m-2">
+                <span class="text-light"><b>Дата: </b> {{ post.date|date:" d E Y в H:i" }}</span>
+                <p><b>Автор: </b><a href="{% url 'user-news' post.author %}" class="bg-light text-dark">{{ post.author }}</a></p>
+            </div>
+        </div>
+        <a href="{% url 'news-detail' post.id %}" class="btn btn-outline btn-sm bg-light">Читать полностью...</a>
+    </div>
+    <div class="m-2"></div>
+    {% endfor %}
+
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="/" class="btn btn-outline-secondary">Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary">Предыдущая</a>
+        {% endif  %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                     <button class="btn btn-secondary">{{ num }}</button>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}" class="btn btn-outline-secondary">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">Следующее</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary">Последняя</a>
+        {% endif  %}
+    {% endif  %}
+
+{% endblock main_section %}

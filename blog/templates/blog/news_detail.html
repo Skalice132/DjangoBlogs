@@ -1,0 +1,23 @@
+{% extends 'blog/main.html' %}
+{% block main_section %}
+    <h2 class="text-center"> Страница с постами </h2>
+    <div class="bg-secondary text-light p-3 md-3 rounded">
+        <h4 class="mx-2"> {{ object.title }} </h4>
+        <p> {{ object.text|safe }} </p>
+        <div class="row ml-2 p-2">
+            <div class="col-md-2">
+                <img src="{{ post.author.profile.img.url }}" alt="{{ post.author }}" class="mr-2 rounded rounded-circle" width="64" height="64">
+            </div>
+            <div class="m-2">
+                <span class="text-light"><b>Дата: </b> {{ post.date|date:" d E Y в H:i" }}</span>
+                <p><b>Автор: </b><a href="{% url 'user-news' post.author %}" class="bg-light text-dark">{{ post.author }}</a></p>
+            </div>
+        </div>
+        {% if object.author == user %}
+        <hr>
+        <a href="{% url 'news-delete' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Удалить статью</a>
+        <a href="{% url 'news-update' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Обновить статью</a>
+        {% endif %}
+        <a href="{% url 'blog-home' %}" class="btn btn-outline btn-sm bg-light m-2">Вернуться</a>
+    </div>
+{% endblock main_section %}

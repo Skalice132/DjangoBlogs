@@ -1,0 +1,10 @@
+{% extends 'blog/main.html' %}
+{% block main_section %}
+    <h2> Страница с задачами </h2>
+
+    <ul>
+    {% for i in dates %}
+        <li>{{ i }}</li>
+    {% endfor %}
+    </ul>
+{% endblock main_section %}

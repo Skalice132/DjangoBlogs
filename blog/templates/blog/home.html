@@ -1,0 +1,65 @@
+{% extends 'blog/main.html' %}
+{% block main_section %}
+    {% for post in post %}
+    <div class="bg-secondary text-light p-3 mb-3 rounded">
+        <!-- Пост -->
+        <h4 class="mx-2"> {{ post.title }} </h4>
+        <p> {{ post.text|striptags|truncatechars:201 }} </p>
+        <div class="row  p-2">
+            <div class="">
+                <img src="{{ post.author.profile.img.url }}" alt="{{ post.author }}" class="mr-2 rounded rounded-circle" width="64" height="64">
+            </div>
+            <div class="m-2">
+                <span class="text-light"><b>Дата: </b> {{ post.date|date:" d E Y в H:i" }}</span>
+                <p><b>Автор: </b><a href="{% url 'user-news' post.author %}" class="bg-light text-dark">{{ post.author }}</a></p>
+            </div>
+        </div>
+        <a href="{% url 'news-detail' post.id %}" class="btn btn-outline btn-sm bg-light">Читать полностью...</a>
+
+        <!-- Лайки
+        <span>
+              <label class="btn btn-secondary">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                </svg>4
+              </label>
+        </span> -->
+        <!-- Лайки -->
+        <span class="btn-group-toggle ml-2" data-toggle="buttons">
+            <label class="btn btn-secondary active">2
+                <input type="checkbox" checked>
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+            </label>
+
+            <label class="btn btn-secondary">5
+                <input type="checkbox" checked>
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-square-dots-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm5 4a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg>
+            </label>
+        </span>
+
+    </div>
+    {% endfor %}
+
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="/" class="btn btn-outline-secondary">Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary">Предыдущая</a>
+        {% endif  %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                     <button class="btn btn-secondary">{{ num }}</button>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}" class="btn btn-outline-secondary">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">Следующее</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary">Последняя</a>
+        {% endif  %}
+    {% endif  %}
+
+{% endblock main_section %}

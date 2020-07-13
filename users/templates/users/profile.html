@@ -1,0 +1,42 @@
+{% extends 'users/main.html' %}
+{% load crispy_forms_tags %}
+{% block main_section %}
+<div class="form-selection">
+    <h2> Профиль | <span class="text-secondary rounded"> {{ user.username }}</span></h2>
+    <div class="media text-muted pt-3">
+          <img src="{{ user.profile.img.url }}" class="mr-2 rounded rounded-circle" width="64" height="64">
+          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <strong class="text-gray-dark">Full Name</strong>
+              <a href="{% url 'blog-home' %}" class="btn btn-outline-secondary xl">На главную</a>
+            </div>
+            <span class="d-block">@{{ user.username }}</span>
+              <p><b>Email:</b> {{ user.email }}</p>
+              <hr>
+          </div>
+        </div>
+        <div class="accordion align-items-center" id="accordionExample">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Изменить данные пользователя
+                </button>
+              </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ update_user|crispy }}
+                {{ img_profile|crispy }}
+                <button type="submit" class="btn btn-outline-secondary">Изменить</button>
+                </form>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+{% endblock main_section %}
+

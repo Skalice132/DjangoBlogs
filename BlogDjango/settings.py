@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'z%5!ejwmvx8*sn$!s@@p^mmp-4$*f%$%1nv!7d&9!@q+nm*%n4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['skalice132.pythonanywhere.com']
+ALLOWED_HOSTS = [
+    'skalice132.pythonanywhere.com',
+    '127.0.0.1'
+]
 
 
 # Application definition

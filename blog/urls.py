@@ -18,6 +18,7 @@ from . import views
 
 urlpatterns = [
     path('', views.ShowPostView.as_view(), name='blog-home'),
+
     path('user/<str:username>/', views.UserAllPostView.as_view(), name='user-news'),
     path('news/<int:pk>/', views.DetailPostView.as_view(), name='news-detail'),
     path('news/add/', views.CreatePostView.as_view(), name='news-add'),

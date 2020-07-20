@@ -5,10 +5,10 @@ from django.urls import reverse
 
 
 class Post(models.Model):
-        title = models.CharField(max_length=100)
-        text = models.TextField()
-        date = models.DateTimeField(default=timezone.now)
-        author = models.ForeignKey(User, on_delete=models.CASCADE)
+        title = models.CharField(max_length=100, verbose_name='Заголовок')
+        text = models.TextField(verbose_name='Текст записи')
+        date = models.DateTimeField(default=timezone.now, verbose_name='Дата публикации')
+        author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор публикации')
 
         def __str__(self):
                 return self.title

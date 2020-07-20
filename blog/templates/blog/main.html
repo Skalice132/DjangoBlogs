@@ -74,8 +74,6 @@
         {% if user.is_authenticated %}
             <div class="btn btn-outline btn-block border bg-light">
               <div class="media text-muted pt-3">
-
-
                   <div class="media-body pb-3 mb-0 small lh-125 border-gray">
                     <img src="{{ user.profile.img.url }}" class="mr-2 rounded rounded-circle" width="64" height="64">
                     <div class="d-flex justify-content-between align-items-center w-100 mt-2">
@@ -96,34 +94,11 @@
               </div>
               <div class="text-center mt-2"> {{ date }} </div>
             </div>
-<!--                        <div class="btn btn-outline btn-block border bg-light">-->
-<!--              <div class="media text-muted pt-3">-->
-<!--                  <img src="{{ user.profile.img.url }}" class="mr-2 rounded rounded-circle" width="64" height="64">-->
-
-<!--                  <div class="media-body pb-3 mb-0 small lh-125 border-gray">-->
-<!--                    <div class="d-flex justify-content-between align-items-center w-100">-->
-<!--                      <strong class="text-gray-dark">Full Name</strong>-->
-<!--                        <div class="btn-group mr-2" role="group" aria-label="First group">-->
-<!--                        <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm mr-2">Выйти</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="d-flex justify-content-between align-items-center w-100">-->
-<!--                      <p class="text-gray-dark">@{{ user.username }}</p>-->
-<!--                    </div>-->
-<!--                      <p><b>Email:</b> {{ user.email }}</p>-->
-<!--                    <div class="btn-group m-2" role="group" aria-label="Second group">-->
-<!--                        <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-sm">Профиль</a>-->
-<!--                    </div>-->
-<!--                    <a href="{% url 'news-add' %}" class="btn btn-outline btn-sm border bg-light">Написать статью</a>-->
-<!--                  </div>-->
-<!--              </div>-->
-<!--              <div class="text-center mt-2"> {{ date }} </div>-->
-<!--            </div>-->
         {% else %}
-            <div>
-            <span>Добро пожаловать!<a class="ml-1"  href="{% url 'reg' %} ">Пойдем к нам?</a></span>
+
+            <div class="text-center">Добро пожаловать!<a class="ml-1 text-white-50"  href="{% url 'reg' %} ">Пойдем к нам?</a></div>
             <p class="text-center"> {{ date }} </p>
-            </div>
+
         {% endif %}
         </div>
 
@@ -131,7 +106,6 @@
                 <h3><b>Интересные цитаты</b></h3>
                 <p>1. {{ a }} </p>
                 <p>2. {{ b }}  </p>
-<!--                <div class="p-3 mb-3"></div>-->
             </div>
         </aside>
     </div>

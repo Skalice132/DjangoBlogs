@@ -22,17 +22,6 @@ quotes = [  "Эффект обычно длится недолго, поскол
             "Ты борешься изо всех сил, норовя любой ценой добиться результата, не понимая, что на самом деле отдаляешь его. Все это вышибает тебя из равновесия, совсем как эмоции выживания и потребления, и чем больше твое отчаяние и сильней раздражение, тем дальше ты отходишь от равновесия."
 ]
 
-# def home(request):
-#     data = {
-#         'post': Post.objects.all(),
-#         'title': 'Блог',
-#         'date': timezone.now,
-#         'a': random.choice(quotes),
-#         'b': random.choice(quotes),
-#         'titlepage':'Страница с постами'
-#         }
-#     return render(request,'blog/home.html',data)
-
 class DeletePostView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     fields = ['title', 'text']

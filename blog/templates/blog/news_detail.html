@@ -15,9 +15,11 @@
         </div>
         {% if object.author == user %}
         <hr>
-        <a href="{% url 'news-delete' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Удалить статью</a>
-        <a href="{% url 'news-update' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Обновить статью</a>
-        {% endif %}
-        <a href="{% url 'blog-home' %}" class="btn btn-outline btn-sm bg-light m-2">Вернуться</a>
+        <center>
+            <a href="{% url 'news-delete' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Удалить статью</a>
+            <a href="{% url 'news-update' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Обновить статью</a>
+            {% endif %}
+            <a href="{% url 'blog-home' %}" class="btn btn-outline btn-sm bg-light m-2">Вернуться</a>
+        </center>
     </div>
 {% endblock main_section %}

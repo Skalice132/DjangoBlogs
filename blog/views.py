@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from .models import Post
+from .models import Post, Tag
 import random
 
 
@@ -21,6 +21,23 @@ quotes = [  "Эффект обычно длится недолго, поскол
             "Если, обладая ясным намерением, ты сумел ощутить принятие будущего и благодарность, значит, ты уже начинаешь осуществлять это событие эмоционально. Ты изменяешь свой мозг и тело. Можно сказать, что ты пребываешь в новом будущем прямо сейчас.",
             "Ты борешься изо всех сил, норовя любой ценой добиться результата, не понимая, что на самом деле отдаляешь его. Все это вышибает тебя из равновесия, совсем как эмоции выживания и потребления, и чем больше твое отчаяние и сильней раздражение, тем дальше ты отходишь от равновесия."
 ]
+
+class ShowPostView(ListView):
+    model = Post
+    template_name = 'blog/home.html'
+    context_object_name = 'post'
+    ordering = ['-date']
+    paginate_by = 4
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        ctx = super(ShowPostView, self).get_context_data(**kwargs)
+        ctx['title'] = 'Главная страница блога'
+        ctx['date'] = timezone.now
+        ctx['a'] = random.choice(quotes)
+        ctx['b'] = random.choice(quotes)
+        ctx['titlepage'] = 'Страница c постами'
+        return ctx
+
 
 class DeletePostView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
@@ -34,27 +51,12 @@ class DeletePostView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-class ShowPostView(ListView):
-    model = Post
-    template_name = 'blog/home.html'
-    context_object_name = 'post'
-    ordering = ['-date']
-    paginate_by = 3
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        ctx = super(ShowPostView, self).get_context_data(**kwargs)
-        ctx['title'] = 'Главная страница блога'
-        ctx['date'] = timezone.now
-        ctx['a'] = random.choice(quotes)
-        ctx['b'] = random.choice(quotes)
-        ctx['titlepage'] = 'Страница c постами'
-        return ctx
 
 class UserAllPostView(ListView):
     model = Post
     template_name = 'blog/user_news.html'
     context_object_name = 'post'
-    paginate_by = 3
+    paginate_by = 4
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
@@ -68,6 +70,26 @@ class UserAllPostView(ListView):
         ctx['b'] = random.choice(quotes)
         return ctx
 
+
+class TagAllPostView(ListView):
+    model = Post
+    template_name = 'blog/tag_news.html'
+    context_object_name = 'post'
+    paginate_by = 4
+
+    def get_queryset(self):
+        tags = get_object_or_404(Post, tags=self.kwargs.tags.get('tags'))
+        return Post.objects.filter(tags=tags)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        ctx = super(TagAllPostView, self).get_context_data(**kwargs)
+        ctx['title'] = f'Все статьи по тегу{ self.kwargs.get("name") }'
+        ctx['date'] = timezone.now
+        ctx['a'] = random.choice(quotes)
+        ctx['b'] = random.choice(quotes)
+        return ctx
+
+
 class DetailPostView(DetailView):
     model = Post
     template_name = 'blog/news_detail.html'
@@ -80,6 +102,7 @@ class DetailPostView(DetailView):
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
         return ctx
+
 
 class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
@@ -97,9 +120,10 @@ class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+
 class CreatePostView(LoginRequiredMixin,CreateView):
     model = Post
-    fields = ['title', 'text']
+    fields = ['title', 'text','tags']
     template_name = 'blog/news_form.html'
    #context_object_name = 'post'
 
@@ -107,18 +131,26 @@ class CreatePostView(LoginRequiredMixin,CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        ctx = super(CreatePostView, self).get_context_data(**kwargs)
+        ctx['title'] = 'Создать новою новость'
+        ctx['date'] = timezone.now
+        ctx['a'] = random.choice(quotes)
+        ctx['b'] = random.choice(quotes)
+        return ctx
+
 def contacts(request):
     return render(request,'blog/contacts.html', {
+        'title': 'Контакты',
+        'titlepage': 'Страница с контактами',
         'a': random.choice(quotes),
-        'title': 'Контакты'})
+        'b': random.choice(quotes)
+    })
 
 def feedback(request):
     return render(request,'blog/feedback.html', {
+        'title': 'Обратная связь',
+        'titlepage': 'Страница с обратной связью ',
         'a': random.choice(quotes),
-        'title': 'Обратная связь'})
-
-def task(request):
-    return render(request,'blog/task.html', {
-        'a': random.choice(quotes),
-        'title': 'Задачи',
-        'dates': ('Пройти часть 1','Пройти часть 2','Пройти часть 3')})
+        'b': random.choice(quotes)
+    })

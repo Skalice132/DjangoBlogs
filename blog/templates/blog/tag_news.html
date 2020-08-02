@@ -1,11 +1,14 @@
 {% extends 'blog/main.html' %}
+
+    <h2 class="text-center p-3"> Статьи по тегам:  {{ post.tags.name }} </h2>
+    <h4 class="text-center p-3"> Количество статей:  {{ page_obj.paginator.count }} </h4>
+
 {% block main_section %}
     {% for post in post %}
-    <div class="bg-secondary text-light p-3 mb-3 rounded">
-        <!-- Пост -->
+    <div class="bg-secondary text-light p-3 md-3 rounded">
         <h4 class="mx-2"> {{ post.title }} </h4>
         <p> {{ post.text|striptags|truncatechars:201 }} </p>
-        <div class="row p-2">
+        <div class="row  p-2">
             <div class="">
                 <img src="{{ post.author.profile.img.url }}" alt="{{ post.author }}" class="mr-2 rounded rounded-circle" width="64" height="64">
             </div>
@@ -16,16 +19,15 @@
             </div>
         </div>
         <a href="{% url 'news-detail' post.id %}" class="btn btn-outline btn-sm bg-light">Читать полностью...</a>
-
     </div>
+    <div class="m-2"></div>
     {% endfor %}
-<!--                                Пагинация-->
+
     {% if is_paginated %}
         {% if page_obj.has_previous %}
             <a href="/" class="btn btn-outline-secondary">Первая</a>
             <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary">Предыдущая</a>
         {% endif  %}
-
             {% for num in page_obj.paginator.page_range %}
                 {% if num == page_obj.number %}
                      <button class="btn btn-secondary">{{ num }}</button>
@@ -33,9 +35,8 @@
                     <a href="?page={{ num }}" class="btn btn-outline-secondary">{{ num }}</a>
                 {% endif %}
             {% endfor %}
-
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">Следующая</a>
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">Следующее</a>
             <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-secondary">Последняя</a>
         {% endif  %}
     {% endif  %}

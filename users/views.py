@@ -3,6 +3,37 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.utils import timezone
 from .forms import UserOurRegistration, ProfileImage, UserUpdateForm
+from django.contrib.auth.models import User
+from django.views.generic import (
+    View,
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView
+)
+
+def profiles(request):
+    user = request.GET.get('user')
+    if user:
+        search = User.objects.all().filter(username=user)
+    else:
+        search = User.objects.all()
+
+    return render(request,
+                  'users/profiles.html',
+                  {'title': 'Список пользователей',
+                   'users_list': search
+                   })
+
+class ProfileDetailView(View):
+    def get(self,request, pk):
+        profiles = User.objects.get(id=pk)
+        return render(request,
+                  'users/profile.html',
+                  {'title': 'Пользователь',
+                   'object_list': profiles
+                   })
 
 
 def register(request):
@@ -17,9 +48,10 @@ def register(request):
         form = UserOurRegistration()
 
     return render(request, 'users/registration.html', {
+        'title': 'Регистрация пользователя',
         'date': timezone.now,
-        'form': form,
-        'title': 'Регистрация пользователя'})
+        'form': form
+        })
 
 @login_required
 def profile(request):
@@ -37,7 +69,8 @@ def profile(request):
         update_user = UserUpdateForm(instance=request.user)
 
     return render(request,'users/profile.html', {
+        'title': 'Профиль',
         'date': timezone.now,
         'img_profile': img_profile,
-        'update_user': update_user,
-        'title': 'Профиль'})
+        'update_user': update_user
+        })

@@ -1,0 +1,71 @@
+{% extends 'users/main.html' %}
+{% block main_section %}
+    <h2 class="text-center p-3"> Профили пользователей({{ users_list.count }}): </h2>
+<h3>Вариант 1</h3>
+<br>
+
+<nav class="navbar navbar-light bg-light">
+  <form method="GET" class="form-inline">
+    <input class="form-control form-control-sm mr-sm-2" type="text" name="user" placeholder="Search" aria-label="Search">
+    <button class="btn btn-sm btn-dark my-2 my-sm-0 mr-sm-1" type="submit">Найти</button>
+    <a class="btn btn-sm btn-dark my-2 my-sm-0" href="{% url 'profiles' %}">Сбросить</a>
+  </form>
+
+</nav>
+
+<br>
+<center>
+  <table class="table table-sm table-striped table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Последний раз был</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for user in users_list %}
+    {% if user.is_staff %}<tr class="table-info">{% else %}<tr>{% endif %}
+        <th scope="row"> {{ user.id }} </th>
+        <td><b><a href="{% url 'profile' %}" class="text-dark">{{ user }}</a></b></td>
+        <td>
+        <i>
+        {% if user.last_login %}
+            {{ user.last_login }}
+        {% else %}
+            очень давно
+        {% endif %}
+        </i></td>
+    </tr>
+  {% empty %}
+   <tr>
+   <td></td>
+   <td><b>Ничего не найдено, введите имя полность(без ошибок)</b></td>
+   <td></td>
+   </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</center>
+<br>
+<br>
+<h3>Вариант 2</h3>
+<br>
+<center>
+    <ol type="1">
+    {% for user in users_list %}
+    <hr>
+      <li><b><a href="{% url 'profile' %}" class="bg-light text-dark">{{ user }}</a> -
+          Последний раз был:
+          <i>{% if user.last_login %}
+            {{ user.last_login }}
+          {% else %}
+            очень давно
+          {% endif %}</i>
+          </b></li>
+    {% endfor %}
+    </ol>
+</center>
+
+{% endblock main_section %}
+

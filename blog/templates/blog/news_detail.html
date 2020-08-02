@@ -10,13 +10,13 @@
             </div>
             <div class="m-2">
                 <p><b>Автор: </b><a href="{% url 'user-news' post.author %}" class="bg-light text-dark">{{ post.author }}</a></p>
-                <p><b>Теги: </b><a href="{% url 'user-news' post.author %}" class="bg-light text-dark">{{ post.author }}</a></p>
+                <p><b>Теги: </b><a href="{% url 'user-news' post.author %}" class="bg-light text-dark">{{ post.tags.name }}</a></p>
                 <span class="text-light"><b>Дата: </b> {{ post.date|date:" d E Y в H:i" }}</span>
             </div>
         </div>
-        {% if object.author == user %}
         <hr>
         <center>
+        {% if object.author == user %}
             <a href="{% url 'news-delete' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Удалить статью</a>
             <a href="{% url 'news-update' object.id %}" class="btn btn-outline btn-sm bg-light m-2">Обновить статью</a>
             {% endif %}

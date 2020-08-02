@@ -5,7 +5,13 @@ from PIL import Image
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Имя')
-    img = models.ImageField(default="default.jpg", upload_to='user_images', verbose_name='Загрузить картинку')
+    img = models.ImageField(default="default.jpg", upload_to='user_images',
+                            verbose_name='Загрузить картинку',
+                            help_text='Загрузить нужное изображение.')
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
 
     def __str__(self):
         return f'Профиль: {self.user.username}'
@@ -19,6 +25,5 @@ class Profile(models.Model):
             image.thumbnail(resize)
             image.save(self.img.path)
 
-    class Meta:
-            verbose_name_plural = 'Профили'
-            verbose_name = 'Профиль'
+
+

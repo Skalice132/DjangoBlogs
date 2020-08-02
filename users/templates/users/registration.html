@@ -7,6 +7,7 @@
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-outline-secondary">Зарегистрироваться</button>
+        <a class="btn btn-outline-secondary" href="{% url 'login' %}">Войти</a>
     </form>
     Уже зарегистрированы? А если <a href="{% url 'login' %}">найду</a>?
 </div>

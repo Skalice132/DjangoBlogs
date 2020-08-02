@@ -144,13 +144,15 @@ def contacts(request):
         'title': 'Контакты',
         'titlepage': 'Страница с контактами',
         'a': random.choice(quotes),
-        'b': random.choice(quotes)
+        'b': random.choice(quotes),
+        'date': timezone.now
     })
 
 def feedback(request):
     return render(request,'blog/feedback.html', {
         'title': 'Обратная связь',
-        'titlepage': 'Страница с обратной связью ',
+        'titlepage': 'Страница с обратной связью',
         'a': random.choice(quotes),
-        'b': random.choice(quotes)
+        'b': random.choice(quotes),
+        'date': timezone.now
     })

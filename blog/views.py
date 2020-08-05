@@ -22,6 +22,8 @@ quotes = [  "Эффект обычно длится недолго, поскол
             "Ты борешься изо всех сил, норовя любой ценой добиться результата, не понимая, что на самом деле отдаляешь его. Все это вышибает тебя из равновесия, совсем как эмоции выживания и потребления, и чем больше твое отчаяние и сильней раздражение, тем дальше ты отходишь от равновесия."
 ]
 
+toposts = Post.objects.all()[:3]
+
 class ShowPostView(ListView):
     model = Post
     template_name = 'blog/home.html'
@@ -32,10 +34,12 @@ class ShowPostView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(ShowPostView, self).get_context_data(**kwargs)
         ctx['title'] = 'Главная страница блога'
+        ctx['titlepage'] = 'Страница c постами'
+        ctx['toposts'] = toposts
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
-        ctx['titlepage'] = 'Страница c постами'
+
         return ctx
 
 
@@ -65,6 +69,8 @@ class UserAllPostView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(UserAllPostView, self).get_context_data(**kwargs)
         ctx['title'] = f'Все статьи польователя{ self.kwargs.get("username") }'
+        ctx['titlepage'] = f'Статьи автора: { self.kwargs.get("username") }'
+        ctx['toposts'] = toposts
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -84,6 +90,8 @@ class TagAllPostView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(TagAllPostView, self).get_context_data(**kwargs)
         ctx['title'] = f'Все статьи по тегу{ self.kwargs.get("name") }'
+        ctx['titlepage'] = 'Страница c постами'
+        ctx['toposts'] = toposts
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -98,6 +106,8 @@ class DetailPostView(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(DetailPostView, self).get_context_data(**kwargs)
         ctx['title'] = Post.objects.filter(pk=self.kwargs['pk']).first()
+        # ctx['titlepage'] = f'Выбрана {str(ctx["title"]).lower()}'
+        ctx['toposts'] = toposts
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -134,6 +144,8 @@ class CreatePostView(LoginRequiredMixin,CreateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(CreatePostView, self).get_context_data(**kwargs)
         ctx['title'] = 'Создать новою новость'
+        ctx['titlepage'] = 'Страница нового поста'
+        ctx['toposts'] = toposts
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -143,6 +155,7 @@ def contacts(request):
     return render(request,'blog/contacts.html', {
         'title': 'Контакты',
         'titlepage': 'Страница с контактами',
+        'toposts': toposts,
         'a': random.choice(quotes),
         'b': random.choice(quotes),
         'date': timezone.now
@@ -152,6 +165,7 @@ def feedback(request):
     return render(request,'blog/feedback.html', {
         'title': 'Обратная связь',
         'titlepage': 'Страница с обратной связью',
+        'toposts': toposts,
         'a': random.choice(quotes),
         'b': random.choice(quotes),
         'date': timezone.now

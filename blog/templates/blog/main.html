@@ -12,12 +12,10 @@
 
     <center>
     <nav class="navbar navbar-expand-lg navbar-light bg-light rounded container d-flex align-items-start">
-
         <div class="col-sm-8">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
             <!-- Меню -->
         <div class="collapse navbar-collapse text-center" id="navbarsExample09">
           <ul class="navbar-nav mr-auto">
@@ -30,9 +28,6 @@
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'profiles' %}">Профили</a>
             </li>
-<!--            <li class="nav-item ">-->
-<!--              <a class="nav-link" href="">О нас</a>-->
-<!--            </li>-->
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'contacts' %}">Констакты</a>
             </li>
@@ -45,25 +40,28 @@
         </div>
     </nav>
     </center>
-
+<!--                Всплывающие информационные сообщения -->
   <main class="container">
     <div class="row">
-        <h2 class="col-md-8 text-center p-3"> {{ titlepage }} </h2>
-        <div class="col-md-8 mb-2">
+         <div class="col-md-8 mb-2">
             {% if messages %}
-                {% for mess in messages %}
+                {% for message in messages %}
                     <div class="alert alert-success">
-                        {{ mess }}
+                        {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}
-
-            {% block main_section %}
-            {% endblock main_section %}
+<!--                 Тело страницы-->
+            <div class="">
+            <h2 class="col text-center p-3"> {{ titlepage }} </h2>
+                {% block main_section %}
+                {% endblock main_section %}
+            </div>
         </div>
 
+<!--                Боковая панель-->
         <aside class="col-md-4">
-                    <!-- Карточка\Добро пожаловать -->
+<!--                Карточка\Добро пожаловать -->
         <div class="bg-secondary text-light p-3 mb-2 rounded">
         {% if user.is_authenticated %}
             <div class="btn btn-outline btn-block border bg-light">
@@ -92,27 +90,36 @@
               <div class="text-center mt-2"> {{ date }} </div>
             </div>
         {% else %}
-            <div class="text-center">Добро пожаловать!<a class="ml-1 text-white-50"  href="{% url 'reg' %} ">Пойдем к нам?</a></div>
+            <div class="text-center">Добро пожаловать!<a class="ml-1 text-white-50"  href="{% url 'reg' %}">Пойдем к нам?</a></div>
             <p class="text-center"> {{ date }} </p>
         {% endif %}
         </div>
+<!--                            Контент для панели-->
+            <div class="bg-secondary text-light p-3 md-3 my-2 rounded">
+                <center><h3><b>Топ 3 статьи:</b></h3></center>
+
+                {% for toposts in toposts %}
+                    <p><a class="ml-1 text-light"  href="">{{ toposts }}</a></p>
+                {% endfor %}
+
+            </div>
 
             <div class="bg-secondary text-light p-3 md-3 rounded">
                 <h3><b>Интересные цитаты</b></h3>
                 <p>1. {{ a }} </p>
                 <p>2. {{ b }}  </p>
             </div>
+
         </aside>
     </div>
   </main>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
   <hr>
 <footer class="blog-footer text-center">
-  <p> Я знаю, что выглядит паршиво, но это все <a href="https://getbootstrap.com/">Bootstrap</a>. Сайт сделан на Django, за это спасибо <a href="https://www.djangoproject.com/">Django Software Foundation</a>.</p>
+  <p> Я знаю, что выглядит простенько, но это все <a href="https://getbootstrap.com/">Bootstrap</a>. Сайт сделан на Django, за это спасибо <a href="https://www.djangoproject.com/">Django Software Foundation</a>.</p>
   <p>
     <a href="#">Верх сделан интереснее</a>
   </p>

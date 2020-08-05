@@ -16,7 +16,7 @@ from django.views.generic import (
 def profiles(request):
     user = request.GET.get('user')
     if user:
-        search = User.objects.all().filter(username=user)
+        search = User.objects.all().filter(username__contains=user)
     else:
         search = User.objects.all()
 

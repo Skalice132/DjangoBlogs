@@ -11,6 +11,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Post, Tag
 import random
+from .scrapping import jobs
 
 
 quotes = [  "Эффект обычно длится недолго, поскольку люди снова становятся теми, кем были прежде, то есть возвращаются к старому состоянию своего бытия. В данном случае каждый из пациентов с болезнью Паркинсона вернулся домой и увидел свою сиделку и свою супругу, уснул в той же самой кровати, съел ту же самую пищу и, может быть, сыграл в шахматы с теми же самыми друзьями, которые жаловались на свои болячки, – поэтому все это прежнее окружение напомнило ему прежнюю личность и прежнее состояние бытия.",
@@ -84,13 +85,13 @@ class TagAllPostView(ListView):
     paginate_by = 4
 
     def get_queryset(self):
-        tags = get_object_or_404(Post, tags=self.kwargs.tags.get('tags'))
+        tags = get_object_or_404(Post, tags=self.kwargs.get('tags'))
         return Post.objects.filter(tags=tags)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(TagAllPostView, self).get_context_data(**kwargs)
         ctx['title'] = f'Все статьи по тегу{ self.kwargs.get("name") }'
-        ctx['titlepage'] = 'Страница c постами'
+        ctx['titlepage'] = f'Страница c тегом { self.kwargs.get("name") }'
         ctx['toposts'] = toposts
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
@@ -169,4 +170,15 @@ def feedback(request):
         'a': random.choice(quotes),
         'b': random.choice(quotes),
         'date': timezone.now
+    })
+
+def vacancies(request):
+    return render(request,'blog/vacancies.html', {
+        'title': 'Доска объявлений',
+        'titlepage': f'Страница с объявлениями({len(jobs)})',
+        'toposts': toposts,
+        'a': random.choice(quotes),
+        'b': random.choice(quotes),
+        'date': timezone.now,
+        'vac': jobs
     })

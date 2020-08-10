@@ -1,0 +1,15 @@
+{% extends 'blog/main.html' %}
+{% block main_section %}
+
+{% for i in vac %}
+<div class="card m-2">
+  <h5 class="card-header">Вакансия: {{ i.title }}</h5>
+  <div class="card-body">
+    <h5 class="card-title">Компания: {{ i.company }}</h5>
+    <p class="card-text">{{ i.content }}</p>
+    <a href="{{ i.href }}" target="_blank" class="btn btn-outline btn-sm border bg-light">Ссылка на вакансию</a>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock main_section %}

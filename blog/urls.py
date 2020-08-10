@@ -20,6 +20,7 @@ urlpatterns = [
     path('', views.ShowPostView.as_view(), name='blog-home'),
     path('contacts/', views.contacts, name='contacts'),
     path('feedback/', views.feedback, name='feedback'),
+    path('vacancies/', views.vacancies, name='vacancies'),
     path('user/<str:username>/', views.UserAllPostView.as_view(), name='user-news'),
     path('tags/<str:name>/', views.TagAllPostView.as_view(), name='tag-news'),
     path('news/<int:pk>/', views.DetailPostView.as_view(), name='news-detail'),

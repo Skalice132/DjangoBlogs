@@ -1,5 +1,4 @@
 import requests
-import codecs
 from bs4 import BeautifulSoup as BS
 
 headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0',
@@ -17,10 +16,3 @@ if response.status_code == 200:
                      'company': item.find('a', class_='bloko-link bloko-link_secondary').get_text().replace(', с опытом работы',''),
                      'content': item.find('div', class_='g-user-content').get_text(),
                      })
-
-    # print(jobs)
-    # for jobs in jobs:
-    #     for k,v in jobs.items():
-    #         m = codecs.open('work1.txt', 'a', 'utf-8')
-    #         m.write(f'{k}: \n {v} \n')
-    #         m.close()

@@ -81,7 +81,6 @@ class UserAllPostView(ListView):
 class TagAllPostView(ListView):
     model = Post
     template_name = 'blog/tag_news.html'
-    context_object_name = 'post'
     paginate_by = 4
 
     def get_queryset(self):
@@ -131,6 +130,15 @@ class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        ctx = super(UpdatePostView, self).get_context_data(**kwargs)
+        ctx['title'] = Post.objects.filter(pk=self.kwargs['pk']).first()
+        # ctx['titlepage'] = f'Выбрана {str(ctx["title"]).lower()}'
+        ctx['toposts'] = toposts
+        ctx['date'] = timezone.now
+        ctx['a'] = random.choice(quotes)
+        ctx['b'] = random.choice(quotes)
+        return ctx
 
 class CreatePostView(LoginRequiredMixin,CreateView):
     model = Post

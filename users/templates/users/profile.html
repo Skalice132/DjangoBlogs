@@ -13,7 +13,8 @@
               <a href="{% url 'blog-home' %}" class="btn btn-outline-secondary xl">На главную</a>
             </div>
             <span class="d-block">@{{ user.username }}</span>
-              <p><b>Email:</b> {{ user.email }}</p>
+            <p><b>Email:</b> {{ user.email }}</p>
+            <span class="d-block"><b>Дата регистрации:</b> {{ user.date_joined }}</span>
               <hr>
           </div>
         </div>

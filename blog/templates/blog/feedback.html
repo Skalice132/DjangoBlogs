@@ -1,6 +1,22 @@
 {% extends 'blog/main.html' %}
 {% block main_section %}
 
+<!--    {% if sent %}-->
+<!--        <h1>E-mail successfully sent</h1>-->
+<!--        <p>-->
+<!--            "{{ post.title }}" was successfully sent to {{ cd.to }}.-->
+<!--        </p>-->
+<!--    {% else %}-->
+<!--        <h1>Share "{{ post.title }}" by e-mail</h1>-->
+<!--        <form action="." method="post">-->
+<!--            {{ form.as_p }}-->
+<!--            {% csrf_token %}-->
+<!--            <input type="submit" value="Send e-mail">-->
+<!--        </form>-->
+<!--    {% endif %}-->
+
+{% if user.is_authenticated %}
+
 <form action="" method="post">
     {% csrf_token %}
     <div class="form-group">
@@ -22,4 +38,17 @@
     </div>
     <button type="submit" class="btn btn-primary mb-2">Оставить отзыв </button>
 </form>
+
+{% else %}
+<p>Авторизованные пользователи могут отправлять feedback.</p>
+<p>Зайти в свой <a class="text-muted" href="{% url 'login' %}">аккаунт</a> или <a class="text-secondary"  href="{% url 'reg' %}">создать</a> новый?</p>
+{% endif %}
+
+<br>
+<h3>Контакты:</h3>
+<br>
+<p>Git: <a href="https://github.com/Skalice132" target="_blank">ссылка</a></p>
+<p>Vk: <a href="https://vk.com/id32404414" target="_blank">ссылка</a></p>
+<p>Tg: <a href="https://t.me/skalice132" target="_blank">ссылка</a></p>
+<p>Trello: <a href="https://trello.com/b/LxCwpmqb/djangoblog-project" target="_blank">ссылка</a></p>
 {% endblock main_section %}

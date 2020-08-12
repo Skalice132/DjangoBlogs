@@ -161,15 +161,15 @@ class CreatePostView(LoginRequiredMixin,CreateView):
         ctx['b'] = random.choice(quotes)
         return ctx
 
-def contacts(request):
-    return render(request,'blog/contacts.html', {
-        'title': 'Контакты',
-        'titlepage': 'Страница с контактами',
-        'toposts': toposts,
-        'a': random.choice(quotes),
-        'b': random.choice(quotes),
-        'date': timezone.now
-    })
+# def contacts(request):
+#     return render(request,'blog/contacts.html', {
+#         'title': 'Контакты',
+#         'titlepage': 'Страница с контактами',
+#         'toposts': toposts,
+#         'a': random.choice(quotes),
+#         'b': random.choice(quotes),
+#         'date': timezone.now
+#     })
 
 def feedback(request):
     # Retrieve post by id

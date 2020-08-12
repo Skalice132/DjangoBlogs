@@ -18,7 +18,7 @@ from . import views
 
 urlpatterns = [
     path('', views.ShowPostView.as_view(), name='blog-home'),
-    path('contacts/', views.contacts, name='contacts'),
+    # path('contacts/', views.contacts, name='contacts'),
     path('feedback/', views.feedback, name='feedback'),
     path('vacancies/', views.vacancies, name='vacancies'),
     path('user/<str:username>/', views.UserAllPostView.as_view(), name='user-news'),

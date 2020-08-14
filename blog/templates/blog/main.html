@@ -101,7 +101,7 @@
             <div class="bg-secondary text-light p-3 md-3 my-2 rounded">
                 <center><h3><b>Топ 3 статьи:</b></h3></center>
                 {% for toposts in toposts %}
-                    <p><a class="ml-1 text-light"  href="">{{ toposts }}</a></p>
+                    <p><a class="ml-1 text-light"  href="{% url 'news-detail' toposts.id %}">{{ toposts }}</a></p>
                 {% endfor %}
 
             </div>

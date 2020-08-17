@@ -163,8 +163,8 @@ class CreatePostView(LoginRequiredMixin,CreateView):
 
 def progress(request):
     return render(request,'blog/progress.html', {
-        'title': 'Контакты',
-        'titlepage': 'Страница с контактами',
+        'title': 'Обучение',
+        'titlepage': 'Страница прогресса обучения',
         'toposts': toposts,
         'a': random.choice(quotes),
         'b': random.choice(quotes),

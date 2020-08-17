@@ -4,8 +4,9 @@
     <h4 class="text-center p-3"> Количество статей:  {{ page_obj.paginator.count }} </h4>
 
 {% block main_section %}
-    {% for post in post %}
-    <div class="bg-secondary text-light p-3 md-3 rounded">
+
+    {% for post in object_list  %}
+     <div class="bg-secondary text-light p-3 md-3 rounded">
         <h4 class="mx-2"> {{ post.title }} </h4>
         <p> {{ post.text|striptags|truncatechars:201 }} </p>
         <div class="row  p-2">
@@ -22,6 +23,8 @@
     </div>
     <div class="m-2"></div>
     {% endfor %}
+
+    {{name}}
 
     {% if is_paginated %}
         {% if page_obj.has_previous %}

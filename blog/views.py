@@ -1,3 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
+from django.core.mail import send_mail
+from .models import Post, Tag
+from .scrapping import jobs
+import random
 from django.views.generic import (
     ListView,
     DetailView,
@@ -5,15 +14,6 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User
-from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
-from django.core.mail import send_mail
-from .models import Post, Tag
-import random
-from .scrapping import jobs
-from django.contrib import messages
 
 quotes = [  "Эффект обычно длится недолго, поскольку люди снова становятся теми, кем были прежде, то есть возвращаются к старому состоянию своего бытия. В данном случае каждый из пациентов с болезнью Паркинсона вернулся домой и увидел свою сиделку и свою супругу, уснул в той же самой кровати, съел ту же самую пищу и, может быть, сыграл в шахматы с теми же самыми друзьями, которые жаловались на свои болячки, – поэтому все это прежнее окружение напомнило ему прежнюю личность и прежнее состояние бытия.",
             "Если ты помнишь, наступил момент, когда ты, вероятно, сказал самому себе: «Мне наплевать, как я себя чувствую [тело]! Не важно, что там происходит в моей жизни [внешнее окружение]! Мне все равно, сколько времени это займет [время]! Я доведу это до конца!",
@@ -25,6 +25,7 @@ quotes = [  "Эффект обычно длится недолго, поскол
 ]
 
 toposts = Post.objects.all()[:3]
+tags = Tag.objects.all()
 
 class ShowPostView(ListView):
     model = Post
@@ -38,6 +39,7 @@ class ShowPostView(ListView):
         ctx['title'] = 'Главная страница блога'
         ctx['titlepage'] = 'Страница c постами'
         ctx['toposts'] = toposts
+        ctx['tags'] = tags
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -66,6 +68,7 @@ class UserAllPostView(ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
+        print(f'По запрасу {user} вывод {Post.objects.filter(author=user)}')
         return Post.objects.filter(author=user).order_by('date')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -73,6 +76,7 @@ class UserAllPostView(ListView):
         ctx['title'] = f'Все статьи польователя{ self.kwargs.get("username") }'
         ctx['titlepage'] = f'Статьи автора: { self.kwargs.get("username") }'
         ctx['toposts'] = toposts
+        ctx['tags'] = tags
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -80,22 +84,26 @@ class UserAllPostView(ListView):
 
 
 class TagAllPostView(ListView):
-    model = Post
+    model = Tag
     template_name = 'blog/tag_news.html'
     paginate_by = 4
 
     def get_queryset(self):
-        tags = get_object_or_404(Post, tags=self.kwargs.get('tags'))
+        tags = get_object_or_404(Tag, name=self.kwargs.get('name'))
+        print(f'По запрасу {tags} вывод {Post.objects.filter(tags=tags)}')
+
         return Post.objects.filter(tags=tags)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(TagAllPostView, self).get_context_data(**kwargs)
-        ctx['title'] = f'Все статьи по тегу{ self.kwargs.get("name") }'
+        ctx['title'] = f'Все статьи по тегу { self.kwargs.get("name") }'
         ctx['titlepage'] = f'Страница c тегом { self.kwargs.get("name") }'
         ctx['toposts'] = toposts
+        ctx['tags'] = tags
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
+        # print(f'{ctx}')
         return ctx
 
 
@@ -109,6 +117,7 @@ class DetailPostView(DetailView):
         ctx['title'] = Post.objects.filter(pk=self.kwargs['pk']).first()
         # ctx['titlepage'] = f'Выбрана {str(ctx["title"]).lower()}'
         ctx['toposts'] = toposts
+        ctx['tags'] = tags
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -136,6 +145,7 @@ class UpdatePostView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         ctx['title'] = Post.objects.filter(pk=self.kwargs['pk']).first()
         # ctx['titlepage'] = f'Выбрана {str(ctx["title"]).lower()}'
         ctx['toposts'] = toposts
+        ctx['tags'] = tags
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -156,6 +166,7 @@ class CreatePostView(LoginRequiredMixin,CreateView):
         ctx['title'] = 'Создать новою новость'
         ctx['titlepage'] = 'Страница нового поста'
         ctx['toposts'] = toposts
+        ctx['tags'] = tags
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
@@ -194,6 +205,7 @@ def feedback(request):
         'title': 'Обратная связь',
         'titlepage': 'Страница с обратной связью',
         'toposts': toposts,
+        'tags': tags,
         'a': random.choice(quotes),
         'b': random.choice(quotes),
         'date': timezone.now
@@ -207,6 +219,7 @@ def vacancies(request):
         'title': 'Доска объявлений',
         'titlepage': f'Страница с объявлениями({len(jobs)})',
         'toposts': toposts,
+        'tags': tags,
         'a': random.choice(quotes),
         'b': random.choice(quotes),
         'date': timezone.now,

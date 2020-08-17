@@ -20,7 +20,14 @@
         <div class="collapse navbar-collapse text-center" id="navbarsExample09">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'blog-home' %}">Главная</a>
+              <a class="nav-link dropdown-toggle" href="{% url 'blog-home' %}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Главная</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="{% url 'blog-home' %}">Все статьи</a>
+              {% for tags in tags %}
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'tag-news' tags.name %}">{{tags}}</a>
+              {% endfor %}
+              </div>
             </li>
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'profile' %}">Профиль</a>
@@ -37,7 +44,6 @@
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'vacancies' %}">Доска объявлений</a>
             </li>
-
           </ul>
         </div>
 

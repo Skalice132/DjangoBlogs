@@ -9,6 +9,9 @@
     <p class="card-text">{{ i.content }}</p>
     <a href="{{ i.href }}" target="_blank" class="btn btn-outline btn-sm border bg-light">Ссылка на вакансию</a>
   </div>
+  <div class="card-footer text-muted">
+    {{ i.data }}
+  </div>
 </div>
 {% endfor %}
 

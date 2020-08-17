@@ -15,4 +15,5 @@ if response.status_code == 200:
                      'href': item.find('a', class_='bloko-link HH-LinkModifier').get('href').replace('?query=Python',''),
                      'company': item.find('a', class_='bloko-link bloko-link_secondary').get_text().replace(', с опытом работы',''),
                      'content': item.find('div', class_='g-user-content').get_text(),
+                     'data': item.find('span', class_="vacancy-serp-item__publication-date").get_text(),
                      })

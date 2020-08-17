@@ -4,16 +4,21 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib import admin
 
+# class feedback(models.Model):
+#     name = models.CharField(max_length=100, verbose_name='Имя полеца')
+#     feedback_email = models.CharField(max_length=100, verbose_name='Email полеца')
+#     respond = models.Bolean(max_length=100, verbose_name='Ответить подлецу')
+
 
 class Tag(models.Model):
-        name = models.CharField(max_length=100, verbose_name='Тег')
+    name = models.CharField(max_length=100, verbose_name='Тег')
 
-        class Meta:
-                verbose_name = 'Тег'
-                verbose_name_plural = 'Теги'
+    class Meta:
+            verbose_name = 'Тег'
+            verbose_name_plural = 'Теги'
 
-        def __str__(self):
-                return f'{self.name}'
+    def __str__(self):
+            return f'{self.name}'
 
 
 class Post(models.Model):

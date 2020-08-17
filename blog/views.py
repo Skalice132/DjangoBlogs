@@ -13,7 +13,7 @@ from django.core.mail import send_mail
 from .models import Post, Tag
 import random
 from .scrapping import jobs
-
+from django.contrib import messages
 
 quotes = [  "Эффект обычно длится недолго, поскольку люди снова становятся теми, кем были прежде, то есть возвращаются к старому состоянию своего бытия. В данном случае каждый из пациентов с болезнью Паркинсона вернулся домой и увидел свою сиделку и свою супругу, уснул в той же самой кровати, съел ту же самую пищу и, может быть, сыграл в шахматы с теми же самыми друзьями, которые жаловались на свои болячки, – поэтому все это прежнее окружение напомнило ему прежнюю личность и прежнее состояние бытия.",
             "Если ты помнишь, наступил момент, когда ты, вероятно, сказал самому себе: «Мне наплевать, как я себя чувствую [тело]! Не важно, что там происходит в моей жизни [внешнее окружение]! Мне все равно, сколько времени это займет [время]! Я доведу это до конца!",
@@ -172,23 +172,23 @@ def progress(request):
     })
 
 def feedback(request):
-    # Retrieve post by id
-    # post = get_object_or_404(Post, id=post_id, status='published')
-    # sent = False
-    # if request.method == 'POST':
-        # Form was submitted
-    #     form = EmailPostForm(request.POST)
-    #     if form.is_valid():
-    #         # Form fields passed validation
-    #         cd = form.cleaned_data
-    #         post_url = request.build_absolute_uri(post.get_absolute_url())
-    #         # subject = '{} ({}) recommends you reading "{}"'.format(cd['name'], cd['email'], post.title)
-    #         subject = '{} ({}) recommends you reading "{}"'
-    #         message = 'Read "{}" at {}\n\n{}\'s comments: {}'
-    #         send_mail(subject, message, 'admin@myblog.com',[cd['to']])
-    #         sent = True
-    # else:
-    #     form = EmailPostForm()
+    form = (request.POST or None)
+    feedback_respond = ''
+    if request.method == 'POST':
+        print(request.POST)
+        if form["feedback_text"] != '':
+            send_mail(f'Обратная связь с сайта от {request.user}',
+                  f'{form["feedback_text"]}\n\t\nС уважением, {request.user}. '
+                  f'\n{feedback_respond}Email: {form["feedback_email"]}',
+                  'mojetmax@gmail.com', ['cheferock132@gmail.com'],
+                  fail_silently=False)
+            messages.warning(request, f'Спасибо за отзыв, {request.user}.')
+        #     feedback_respond = 'Нужно ответить на '
+        else:
+             messages.warning(request, f'Поля остались пустые. {request.user}, введите, пожалуйста, текст отзыва.')
+        #     feedback_respond = 'Пользователь отказался от обратной связи. '
+
+
 
     return render(request,'blog/feedback.html', {
         'title': 'Обратная связь',

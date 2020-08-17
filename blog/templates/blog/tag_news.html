@@ -1,9 +1,6 @@
 {% extends 'blog/main.html' %}
-
-    <h2 class="text-center p-3"> Статьи по тегам:  {{ post.tags.name }} </h2>
-    <h4 class="text-center p-3"> Количество статей:  {{ page_obj.paginator.count }} </h4>
-
 {% block main_section %}
+    <h4 class="text-center p-3"> Количество статей:  {{ page_obj.paginator.count  }} </h4>
 
     {% for post in object_list  %}
      <div class="bg-secondary text-light p-3 md-3 rounded">
@@ -22,9 +19,10 @@
         <a href="{% url 'news-detail' post.id %}" class="btn btn-outline btn-sm bg-light">Читать полностью...</a>
     </div>
     <div class="m-2"></div>
+    {% empty %}
+        <br>
+        <center><h5>По тегу {{ tags.name }} ничего не найдено, попробуйте другой тег.</h5></center>
     {% endfor %}
-
-    {{name}}
 
     {% if is_paginated %}
         {% if page_obj.has_previous %}

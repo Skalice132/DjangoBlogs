@@ -90,20 +90,17 @@ class TagAllPostView(ListView):
 
     def get_queryset(self):
         tags = get_object_or_404(Tag, name=self.kwargs.get('name'))
-        print(f'По запрасу {tags} вывод {Post.objects.filter(tags=tags)}')
-
         return Post.objects.filter(tags=tags)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         ctx = super(TagAllPostView, self).get_context_data(**kwargs)
         ctx['title'] = f'Все статьи по тегу { self.kwargs.get("name") }'
-        ctx['titlepage'] = f'Страница c тегом { self.kwargs.get("name") }'
+        ctx['titlepage'] = f'Страница c тегом: { self.kwargs.get("name") }'
         ctx['toposts'] = toposts
         ctx['tags'] = tags
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
-        # print(f'{ctx}')
         return ctx
 
 
@@ -177,6 +174,7 @@ def progress(request):
         'title': 'Обучение',
         'titlepage': 'Страница прогресса обучения',
         'toposts': toposts,
+        'tags': tags,
         'a': random.choice(quotes),
         'b': random.choice(quotes),
         'date': timezone.now

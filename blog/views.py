@@ -43,7 +43,6 @@ class ShowPostView(ListView):
         ctx['date'] = timezone.now
         ctx['a'] = random.choice(quotes)
         ctx['b'] = random.choice(quotes)
-
         return ctx
 
 
@@ -197,8 +196,6 @@ def feedback(request):
              messages.warning(request, f'Поля остались пустые. {request.user}, введите, пожалуйста, текст отзыва.')
         #     feedback_respond = 'Пользователь отказался от обратной связи. '
 
-
-
     return render(request,'blog/feedback.html', {
         'title': 'Обратная связь',
         'titlepage': 'Страница с обратной связью',
@@ -207,9 +204,6 @@ def feedback(request):
         'a': random.choice(quotes),
         'b': random.choice(quotes),
         'date': timezone.now
-        # 'post': post,
-        # 'form': form,
-        # 'sent': sent
     })
 
 def vacancies(request):
